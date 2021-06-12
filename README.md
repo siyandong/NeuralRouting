@@ -17,7 +17,7 @@ Overall, our algorithm consists of two steps: a scene coordinate regressor for 3
 
 If you find our work helpful in your research, please consider citing:
 ```
-@inproceedings{dong2021neuralrouting,
+@inproceedings{neuralrouting,
   title={Robust Neural Routing Through Space Partitions for Camera Relocalization in Dynamic Indoor Environments},
   author={Dong, Siyan and Fan, Qingnan and Wang, He and Shi, Ji and Yi, Li and Funkhouser, Thomas and Chen, Baoquan and Guibas, Leonidas},
   booktitle={IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
