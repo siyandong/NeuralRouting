@@ -3,6 +3,8 @@
 *[Siyan Dong](https://siyandong.github.io/), *[Qingnan Fan](https://fqnchina.github.io/), [He Wang](https://ai.stanford.edu/~hewang/), [Ji Shi](http://blog.sjj118.com/), [Li Yi](https://ericyi.github.io/), 
 [Thomas Funkhouser](https://www.cs.princeton.edu/~funk/), [Baoquan Chen](http://cfcs.pku.edu.cn/baoquan/), [Leonidas J. Guibas](https://geometry.stanford.edu/member/guibas/)
 
+* Equal Contribution
+
 ![teaser](assets/teaser_traj.jpg)
 
 We provide the implementation of NeuralRouting, a novel outlier-aware neural tree model to estimate camera pose in dynamic environments. 
