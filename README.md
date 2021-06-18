@@ -88,7 +88,7 @@ It will infer pixel-wise scene coordinates (as GMM) and save them in the folder 
 
 ### Pose Optimization
 
-The pose optimization code is based on the RANSAC in [spaint](https://github.com/torrvision/spaint). You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_v0.2](https://hub.docker.com/repository/docker/siyandong/neuralrouting).
+You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_v0.2](https://hub.docker.com/repository/docker/siyandong/neuralrouting).
 In the container, run the following commands
 ```
 cd /opt/relocalizer_codes/spaint
@@ -101,7 +101,7 @@ It will output the estimated camera poses in the folder ```/opt/relocalizer_code
 
 ### ICP Refinement
 
-This module is based on [spaint](https://github.com/torrvision/spaint) and [InfiniTAM](https://github.com/victorprad/InfiniTAM). You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_icp_v0.0](https://hub.docker.com/repository/docker/siyandong/neuralrouting). In the container, run the following commands
+You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_icp_v0.0](https://hub.docker.com/repository/docker/siyandong/neuralrouting). In the container, run the following commands
 ```
 cd /opt/relocalizer_codes/spaint
 python run_ransac_icp.py --data_folder_mask <dataset folder mask> --scene_id <scene id> --sequence_id <sequence id> --prediction_folder <gmm prediction folder>
@@ -109,6 +109,11 @@ python run_ransac_icp.py --data_folder_mask <dataset folder mask> --scene_id <sc
 For example, ```python run_ransac_icp.py --data_folder_mask /opt/dataset/scene{:02d}/seq{:02d} --scene_id 1 --sequence_id 2 --prediction_folder /opt/relocalizer_codes/NeuralRouting/gmm_prediction/rio10_scene01_seq01_02```.
 
 It will output the estimated camera poses in the folder ```/opt/relocalizer_codes/spaint/build/bin/apps/spaintgui/reloc_poses```.
+
+
+## Acknowledgments
+
+In this repository, we use parts of the implementation from [spaint](https://github.com/torrvision/spaint) and [InfiniTAM](https://github.com/victorprad/InfiniTAM). We thank the respective authors for open sourcing their code.
 
 
 <!--More Space Partition Strategies-->
