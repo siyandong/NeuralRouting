@@ -68,12 +68,12 @@ For example, ```python train.py --exp_name rio10_scene01```.
 
 It will build the tree, train it level by level, and save the model parameters in the folder ```./experiment/<checkpoint folder>```.
 
-You can find the pre-trained checkpoints [here](todo).
+You can find the pre-trained checkpoints [here](https://drive.google.com/drive/folders/1tmWKYZoz7EIIYLppztVQVgkBjoUt5f2a?usp=sharing).
 
 
 ## Test
 
-### Correspondence Establishment
+### Step1: Correspondence Establishment
 
 Set ```dataset_folder``` and ```scene_id``` in ```config.py```. 
 
@@ -86,7 +86,9 @@ For example, ```python test.py --exp_name rio10_scene01 --test_seq seq01_02```.
 It will infer pixel-wise scene coordinates (as GMM) and save them in the folder ```./gmm_prediction```.
 
 
-### Pose Optimization
+### Step2: Pose Optimization
+
+#### (a) RANSAC
 
 You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_v0.2](https://hub.docker.com/repository/docker/siyandong/neuralrouting).
 In the container, run the following commands
@@ -99,7 +101,7 @@ For example, ```python run_ransac.py --data_folder_mask /opt/dataset/scene{:02d}
 It will output the estimated camera poses in the folder ```/opt/relocalizer_codes/spaint/build/bin/apps/relocgui/reloc_poses```.
 
 
-### ICP Refinement
+#### (b) RANSAC with ICP Refinement
 
 You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_icp_v0.0](https://hub.docker.com/repository/docker/siyandong/neuralrouting). In the container, run the following commands
 ```
