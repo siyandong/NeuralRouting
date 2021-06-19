@@ -32,7 +32,7 @@ If you find our work helpful in your research, please consider citing:
 
 ## Requirements
 
-The code in this repository is tested on Python 3.7.3, PyTorch 1.1.0, CUDA 10.0, OpenCV 4.5.1, and scikit-learn 0.21.2. 
+The codes in this repository are tested with Python 3.7.3, PyTorch 1.1.0, CUDA 10.0, OpenCV 4.5.1 and scikit-learn 0.21.2. 
 We recommend running our code in the Docker container [siyandong/neuralrouting:ransac_v0.2](https://hub.docker.com/repository/docker/siyandong/neuralrouting).
 ```
 docker run -v <dataset folder>:/opt/dataset -it --gpus all --rm --entrypoint /bin/bash --name <container name> siyandong/neuralrouting:ransac_v0.2
@@ -88,9 +88,11 @@ It will infer pixel-wise scene coordinates (as GMM) and save them in the folder 
 
 ### Step2: Pose Optimization
 
+The following two parts are both required to achieve the performance reported in the paper.
+
 #### (a) RANSAC
 
-You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_v0.2](https://hub.docker.com/repository/docker/siyandong/neuralrouting).
+You should run this part of codes in the Docker container [siyandong/neuralrouting:ransac_v0.2](https://hub.docker.com/repository/docker/siyandong/neuralrouting).
 In the container, run the following commands
 ```
 cd /opt/relocalizer_codes/spaint
@@ -101,9 +103,9 @@ For example, ```python run_ransac.py --data_folder_mask /opt/dataset/scene{:02d}
 It will output the estimated camera poses in the folder ```/opt/relocalizer_codes/spaint/build/bin/apps/relocgui/reloc_poses```.
 
 
-#### (b) RANSAC with ICP Refinement
+#### (b) ICP Refinement
 
-You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_icp_v0.0](https://hub.docker.com/repository/docker/siyandong/neuralrouting). In the container, run the following commands
+You should run this part of codes in the Docker container [siyandong/neuralrouting:ransac_icp_v0.0](https://hub.docker.com/repository/docker/siyandong/neuralrouting). In the container, run the following commands
 ```
 cd /opt/relocalizer_codes/spaint
 python run_ransac_icp.py --data_folder_mask <dataset folder mask> --scene_id <scene id> --sequence_id <sequence id> --prediction_folder <gmm prediction folder>
