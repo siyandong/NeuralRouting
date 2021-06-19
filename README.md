@@ -101,7 +101,7 @@ For example, ```python run_ransac.py --data_folder_mask /opt/dataset/scene{:02d}
 It will output the estimated camera poses in the folder ```/opt/relocalizer_codes/spaint/build/bin/apps/relocgui/reloc_poses```.
 
 
-#### (b) RANSAC with ICP Refinement
+#### (b) ICP Refinement
 
 You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_icp_v0.0](https://hub.docker.com/repository/docker/siyandong/neuralrouting). In the container, run the following commands
 ```
