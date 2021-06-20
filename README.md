@@ -44,14 +44,11 @@ In the container, run ```source activate NeuralRouting``` to activate the enviro
 
 The data follows the format of the [RIO10 benchmark](http://vmnavab26.in.tum.de/RIO10/benchmarks.php). To use the code, please download the dataset first. 
 
-We apply a random transformation to the original ground-truth camera poses. Set the ```dataset_folder``` in ```random_transformation.py``` to the dataset folder, for example ```dataset_folder = '/opt/dataset'```.
-
-Run the script
+In our experiments, we apply a random transformation to the original ground-truth camera poses each scene. The pre-computed parameters and pre-trained model weights rely on the transformed coordiante system. Therefore, run the following script to convert coordinate system before running our algorithm
 ```
-python random_transformation.py
+python random_transformation.py --dataset_folder <dataset folder>
 ```
-
-Set the ```dataset_folder``` in ```config.py``` to the dataset folder before training and test.
+For example, ```python random_transformation.py --dataset_folder /opt/dataset```. After camera pose estimation, run the same script with different argument to convert the estimation to the original coordinate system.
 
 
 ## Training
@@ -113,6 +110,15 @@ python run_ransac_icp.py --data_folder_mask <dataset folder mask> --scene_id <sc
 For example, ```python run_ransac_icp.py --data_folder_mask /opt/dataset/scene{:02d}/seq{:02d} --scene_id 1 --sequence_id 2 --prediction_folder /opt/relocalizer_codes/NeuralRouting/gmm_prediction/rio10_scene01_seq01_02```.
 
 It will output the estimated camera poses in the folder ```/opt/relocalizer_codes/spaint/build/bin/apps/spaintgui/reloc_poses```.
+
+
+## Coordinate System Conversion
+
+To convert the pose estimation to the original scene coordinate system of the [RIO10 benchmark](http://vmnavab26.in.tum.de/RIO10/benchmarks.php), run
+```
+python random_transformation.py --pose_folder <camera pose estimation folder> --scene_id <scene id>
+```
+For example, ```python random_transformation.py --pose_folder /opt/relocalizer_codes/spaint/build/bin/apps/spaintgui/reloc_poses/20210620T112628 --scene_id 1```.
 
 
 ## Acknowledgments
