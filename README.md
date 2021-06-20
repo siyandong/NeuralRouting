@@ -32,7 +32,7 @@ If you find our work helpful in your research, please consider citing:
 
 ## Requirements
 
-The code in this repository is tested on Python 3.7.3, PyTorch 1.1.0, CUDA 10.0, OpenCV 4.5.1, and scikit-learn 0.21.2. 
+The codes in this repository are tested with Python 3.7.3, PyTorch 1.1.0, CUDA 10.0, OpenCV 4.5.1 and scikit-learn 0.21.2. 
 We recommend running our code in the Docker container [siyandong/neuralrouting:ransac_v0.2](https://hub.docker.com/repository/docker/siyandong/neuralrouting).
 ```
 docker run -v <dataset folder>:/opt/dataset -it --gpus all --rm --entrypoint /bin/bash --name <container name> siyandong/neuralrouting:ransac_v0.2
@@ -68,12 +68,12 @@ For example, ```python train.py --exp_name rio10_scene01```.
 
 It will build the tree, train it level by level, and save the model parameters in the folder ```./experiment/<checkpoint folder>```.
 
-You can find the pre-trained checkpoints [here](todo).
+You can find the pre-trained checkpoints [here](https://drive.google.com/drive/folders/1tmWKYZoz7EIIYLppztVQVgkBjoUt5f2a?usp=sharing).
 
 
 ## Test
 
-### Correspondence Establishment
+### Step1: Correspondence Establishment
 
 Set ```dataset_folder``` and ```scene_id``` in ```config.py```. 
 
@@ -86,9 +86,13 @@ For example, ```python test.py --exp_name rio10_scene01 --test_seq seq01_02```.
 It will infer pixel-wise scene coordinates (as GMM) and save them in the folder ```./gmm_prediction```.
 
 
-### Pose Optimization
+### Step2: Pose Optimization
 
-The pose optimization code is based on the RANSAC in [spaint](https://github.com/torrvision/spaint). You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_v0.2](https://hub.docker.com/repository/docker/siyandong/neuralrouting).
+The following two parts are both required to achieve the performance reported in the paper.
+
+#### (a) RANSAC
+
+You should run this part of codes in the Docker container [siyandong/neuralrouting:ransac_v0.2](https://hub.docker.com/repository/docker/siyandong/neuralrouting).
 In the container, run the following commands
 ```
 cd /opt/relocalizer_codes/spaint
@@ -99,9 +103,9 @@ For example, ```python run_ransac.py --data_folder_mask /opt/dataset/scene{:02d}
 It will output the estimated camera poses in the folder ```/opt/relocalizer_codes/spaint/build/bin/apps/relocgui/reloc_poses```.
 
 
-### ICP Refinement
+#### (b) ICP Refinement
 
-This module is based on [spaint](https://github.com/torrvision/spaint) and [InfiniTAM](https://github.com/victorprad/InfiniTAM). You should run this part of code in the Docker container [siyandong/neuralrouting:ransac_icp_v0.0](https://hub.docker.com/repository/docker/siyandong/neuralrouting). In the container, run the following commands
+You should run this part of codes in the Docker container [siyandong/neuralrouting:ransac_icp_v0.0](https://hub.docker.com/repository/docker/siyandong/neuralrouting). In the container, run the following commands
 ```
 cd /opt/relocalizer_codes/spaint
 python run_ransac_icp.py --data_folder_mask <dataset folder mask> --scene_id <scene id> --sequence_id <sequence id> --prediction_folder <gmm prediction folder>
@@ -109,6 +113,11 @@ python run_ransac_icp.py --data_folder_mask <dataset folder mask> --scene_id <sc
 For example, ```python run_ransac_icp.py --data_folder_mask /opt/dataset/scene{:02d}/seq{:02d} --scene_id 1 --sequence_id 2 --prediction_folder /opt/relocalizer_codes/NeuralRouting/gmm_prediction/rio10_scene01_seq01_02```.
 
 It will output the estimated camera poses in the folder ```/opt/relocalizer_codes/spaint/build/bin/apps/spaintgui/reloc_poses```.
+
+
+## Acknowledgments
+
+In this repository, we use parts of the implementation from [spaint](https://github.com/torrvision/spaint) and [InfiniTAM](https://github.com/victorprad/InfiniTAM). We thank the respective authors for open sourcing their code.
 
 
 <!--More Space Partition Strategies-->
