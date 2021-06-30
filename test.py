@@ -68,63 +68,20 @@ if __name__ == '__main__':
     nt = scene_partition_tree.NetTree(opt.scene_bbx, opt=opt)
     nt.build_multi_level(opt.tree_height)
 
-    # compute gmm in tree leaf nodes.
+    # load leaf gmm.
     if True:
-        # save raw coords in leaf nodes.
-        print('initializing leaf coords...')
-        if not g_bool_load_from_pickle:
-            nt.init_leaf_coords(train_data_root, train_frame_list)
-            nt.save_leaf_coords_to_file(g_pickle_leaf_coords_prefix)
-        else:
-            nt.load_leaf_coords_from_file(g_pickle_leaf_coords_prefix)
-        # fit gmm in each leaf node.
-        print('fitting leaf gmms...')
+        print('loading leaf gmms...')
         node_list = []
         nt.get_node_list(nt.root_node, node_list)
         valid_num = 0
         for index, node in enumerate(tqdm(node_list)):
-            # if load gmm from file.
+            # load gmm from pickle.
             leaf_gmm_path = '{}/{}_leaf_gmm.pk'.format(g_pickle_leaf_gmm_prefix, node.node_id)
             if os.path.exists(leaf_gmm_path):
                 with open(leaf_gmm_path, 'rb') as fp:
                     node.leaf_gmm = pickle.loads(fp.read())
                     valid_num+=1
                     continue
-            # fit gmm.
-            if True:
-                if len(node.leaf_coords) == 0: continue
-                for lid in range(len(node.leaf_coords)):
-                    coords = node.leaf_coords[lid]
-                    if len(coords) < 10:
-                        node.leaf_gmm.append(None)
-                        continue
-                    crd_ary = np.array(coords)
-                    # clustering as initialization.
-                    bandwidth = estimate_bandwidth(crd_ary[:, 0:3], quantile=0.2, n_samples=500)
-                    bandwidth *= 0.5
-                    bandwidth = 0.05
-                    ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
-                    ms.fit(crd_ary[:, 0:3])
-                    labels = ms.labels_
-                    cluster_centers = ms.cluster_centers_
-                    labels_unique = np.unique(labels)
-                    n_cluster = len(labels_unique)
-                    # fit gmm based on clusters.
-                    gmm = mixture.GaussianMixture(n_components=n_cluster)
-                    gmm.fit(crd_ary[:, 0:3])
-                    means = gmm.means_
-                    covars = gmm.covariances_
-                    weights = gmm.weights_
-                    # save to the leaf node.
-                    node.leaf_gmm.append(scene_partition_tree.GMM(gmm, means, covars, weights))
-                # check.
-                if not len(node.leaf_coords) == len(node.leaf_gmm):
-                    print('error: please clear gmm files and re-fit.')
-                    exit()
-                # save to file.
-                with open(leaf_gmm_path, 'wb') as fp:
-                    pickle.dump(node.leaf_gmm, fp)
-                    #print('saved leaf gmm to file.')
         print('{} valid pickle files.'.format(valid_num))
 
     # set neural routing functions: load from trained checkpoint.
