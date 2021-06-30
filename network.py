@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import time
 
 
 # encode visual input.
@@ -69,7 +70,7 @@ class SharedClassifier(nn.Module):
             x = F.log_softmax(x, dim=1)
         else:
             batch_size = x_feature.shape[0]
-            # classify by node. much faster in low levels.
+            # classify by node. much faster in deep levels.
             x_param_np = x_param.cpu().numpy()
             info2idx_map = dict()
             node_infos = set()
@@ -84,24 +85,15 @@ class SharedClassifier(nn.Module):
             for sid in range(batch_size):
                 info = tuple(x_param_np[sid].tolist())
                 new_batches[info2idx_map[info]].append(sid)
-            # forward each new_batch. 
+            # forward each new batch. 
             x_0 = x_feature
-            x_1 = torch.zeros(batch_size, 2048).cuda()
-            x_2 = torch.zeros(batch_size, 1024).cuda()
-            output = torch.zeros(batch_size, self.n_channel_out).cuda()
-            for sid_list in new_batches:
-                wid = sid_list[0]
-                # 1st layer.
-                x_1[sid_list,:] = self.base_net_linear1(x_0[sid_list,:])
-                x_1[sid_list,:] = F.group_norm(x_1[sid_list,:], self.n_group, weight=base_net_norm_weight1[wid], bias=base_net_norm_bias1[wid])
-                x_1[sid_list,:] = self.relu(x_1[sid_list,:])
-                # 2nd layer.
-                x_2[sid_list,:] = self.base_net_linear2(x_1[sid_list,:])
-                x_2[sid_list,:] = F.group_norm(x_2[sid_list,:], self.n_group, weight=base_net_norm_weight2[wid], bias=base_net_norm_bias2[wid])
-                x_2[sid_list,:] = self.relu(x_2[sid_list,:])
-                # 3rd layer.
-                output[sid_list,:] = self.base_net_linear3(x_2[sid_list,:])
-            x = output
+            x_1 = self.base_net_linear1(x_0)
+            for sid_list in new_batches: x_1[sid_list,:] = F.group_norm(x_1[sid_list,:], self.n_group, weight=base_net_norm_weight1[sid_list[0]], bias=base_net_norm_bias1[sid_list[0]])
+            x_1 = self.relu(x_1)
+            x_2 = self.base_net_linear2(x_1)
+            for sid_list in new_batches: x_2[sid_list,:] = F.group_norm(x_2[sid_list,:], self.n_group, weight=base_net_norm_weight2[sid_list[0]], bias=base_net_norm_bias2[sid_list[0]])
+            x_2 = self.relu(x_2)
+            x = self.base_net_linear3(x_2)
             x = F.log_softmax(x, dim=1)
         return x
 
