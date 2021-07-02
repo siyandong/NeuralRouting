@@ -121,6 +121,16 @@ python random_transformation.py --pose_folder <camera pose estimation folder> --
 For example, ```python random_transformation.py --pose_folder /opt/relocalizer_codes/spaint/build/bin/apps/spaintgui/reloc_poses/20210620T112628 --scene_id 1```.
 
 
+## Performance
+
+We provide our camera pose accuracy on the validation set for each scene of RIO10 dataset. We further compute the weighted average pose accuracy by weighing each scene via the number of scene frames, following the pose accuracy calculation in the RIO-10 online benchmark. 
+
+| (5cm, 5deg) | scene01 | scene02 | scene03 | scene04 | scene05 | scene06 | scene07 | scene08 | scene09 | scene10 | average | weighted average |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| NeuralRouting(w/o ICP) | 58.62 | 18.70 | 17.02 | 10.59 | 27.14 | 62.06 | 55.54 | 11.55 | 7.63 | 1.69 | 27.05 | 21.59 |
+| NeuralRouting(w/ ICP) | 66.80 | 23.40 | 19.48 | 17.81 | 42.08 | 69.15 | 57.79 | 15.24 | 7.52 | 0.62 | 31.99 | 24.05 |
+
+
 ## Acknowledgments
 
 In this repository, we use parts of the implementation from [spaint](https://github.com/torrvision/spaint) and [InfiniTAM](https://github.com/victorprad/InfiniTAM). We thank the respective authors for open sourcing their code.
