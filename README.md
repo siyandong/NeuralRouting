@@ -3,7 +3,7 @@
 \*[Siyan Dong](https://siyandong.github.io/), \*[Qingnan Fan](https://fqnchina.github.io/), [He Wang](https://ai.stanford.edu/~hewang/), [Ji Shi](http://blog.sjj118.com/), [Li Yi](https://ericyi.github.io/), 
 [Thomas Funkhouser](https://www.cs.princeton.edu/~funk/), [Baoquan Chen](http://cfcs.pku.edu.cn/baoquan/), [Leonidas J. Guibas](https://geometry.stanford.edu/member/guibas/)
 
-\* Equal Contribution | [Video](https://www.youtube.com/watch?v=jb_ukdtKTx8) | [Poster](https://drive.google.com/file/d/16RWdyusYaPuUlFfH6wYnIQqZpumfttOy/view?usp=sharing)
+\* Equal Contribution | [Video](https://www.youtube.com/watch?v=_1eInWKbuVA&t=29s) | [Poster](https://drive.google.com/file/d/16RWdyusYaPuUlFfH6wYnIQqZpumfttOy/view?usp=sharing)
 
 ![teaser](assets/teaser_traj.jpg)
 
